@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, flash, abort
+from flask import Flask, render_template, request, url_for, redirect, flash, abort, session, jsonify
 import json
 import os.path as path
 from werkzeug.utils import secure_filename
@@ -8,7 +8,7 @@ app.secret_key="awdjawd2r3r3d"
 
 @app.route("/")
 def home():
-    return render_template("home.html")
+    return render_template("home.html", codes=session.keys())
 
 
 @app.route("/short-url", methods=["GET", "POST"])
@@ -32,9 +32,14 @@ def user():
             urls[short_url] = {'file':full_name}
         with open('urls.json', 'w') as url_file:
             json.dump(urls, url_file)
+            session[short_url] = True
         return render_template('short-url.html', code=short_url, serverurl='http://localhost:5000/')
     else:
         return redirect(url_for('home'))
+
+@app.route('/api/session')
+def session_keys():
+    return jsonify(list(session.keys()))
 
 @app.route('/<string:code>')
 def short_path(code):
@@ -52,3 +57,4 @@ def short_path(code):
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('notfound.html', serverurl="http://localhost:5000"), 404
+

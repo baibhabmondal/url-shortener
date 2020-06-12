@@ -1,0 +1,13 @@
+<html>
+<title>{% block title %}{% endblock %}</title>
+
+<body>
+    <h2>Shorten your URLs</h2>
+    {% for msg in get_flashed_messages() %}
+    <p>{{ msg }}</p>
+    {% endfor %}
+    {% block main %}
+    {% endblock %}
+</body>
+
+</html>

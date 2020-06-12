@@ -1,22 +1,33 @@
-<html>
-    <h1>
-        URL SHORTENER
-    </h1>
-    {% for msg in get_flashed_messages() %}
-        <p>{{ msg }}</p>
+{% extends 'base.html' %}
+
+{% block title %}
+    url-shortener
+{% endblock %}
+
+{% block main %}
+<form action="short-url" method="POST">
+    <label for="url">Website URL</label>
+    <input type="url" name="url" id="url" required>
+    <label for="code">Short name</label>
+    <input type="text" name="code" id="code" required>
+    <button type="submit">Shorten</button>
+</form>
+<form action="short-url" method="POST" enctype="multipart/form-data">
+    <label for="file">File</label>
+    <input type="file" name="file" required>
+    <label for="code">Short name</label>
+    <input type="text" name="code" id="code" required>
+    <button type="submit">Shorten</button>
+</form>
+
+{% if codes %}
+<h3>Registered urls:</h3>
+<ul>
+    {% for code in codes %}
+    <a href="{{ url_for('short_path', code=code) }} ">
+        <li>{{ code }}</li>
+    </a>
     {% endfor %}
-    <form action="short-url" method="POST">
-        <label for="url">Website URL</label>
-        <input type="url" name="url" id="url" required>
-        <label for="code">Short name</label>
-        <input type="text" name="code" id="code" required>
-        <button type="submit">Shorten</button>
-    </form>
-    <form action="short-url" method="POST" enctype="multipart/form-data">
-        <label for="file">File</label>
-        <input type="file" name="file" required>
-        <label for="code">Short name</label>
-        <input type="text" name="code" id="code" required>
-        <button type="submit">Shorten</button>
-    </form>
-</html>
+</ul>
+{% endif %}
+{% endblock %}
