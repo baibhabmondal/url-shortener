@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, flash
+from flask import Flask, render_template, request, url_for, redirect, flash, abort
 import json
 import os.path as path
 from werkzeug.utils import secure_filename
@@ -28,7 +28,7 @@ def user():
         else:
             f = request.files['file']
             full_name = short_url + secure_filename(f.filename)
-            f.save('I:/Projects/url-shortener/' + full_name)
+            f.save('I:/Projects/url-shortener/static/user_files/' + full_name)
             urls[short_url] = {'file':full_name}
         with open('urls.json', 'w') as url_file:
             json.dump(urls, url_file)
@@ -46,10 +46,9 @@ def short_path(code):
                 if 'url' in urls[code].keys():
                     return redirect(urls[code]['url'])
                 else:
-                    return redirect(urls[code]['file'])
-            else:
-                flash('No such URL')
-                return redirect(url_for('home'))
-    else:
-        flash('No data')
-        return redirect(url_for('home'))
+                    return redirect(url_for('static', filename='user_files/' + urls[code]['file']))
+    abort(404)
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('notfound.html', serverurl="http://localhost:5000"), 404
