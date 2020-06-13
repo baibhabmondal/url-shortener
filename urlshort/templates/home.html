@@ -45,7 +45,7 @@
   <h2>Codes you have created:</h2>
   <ul>
     {% for code in codes %}
-    <a href="{{ url_for('short_path', code=code) }}">
+    <a href="{{ url_for('urlshort.short_path', code=code) }}">
       <li>{{ code }}</li>
     </a>
     {% endfor %}

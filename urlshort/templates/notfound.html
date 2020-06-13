@@ -1,6 +1,4 @@
-{% extends 'base.html' %}
-{% block title %} Page Not Found {% endblock %}
-{% block main %}
+<title>Page not found</title>
 <style>
   @import url("https://fonts.googleapis.com/css2?family=Fontdiner+Swanky&family=Roboto:wght@500&display=swap");
   * {
@@ -133,8 +131,6 @@
     <p>
       Either you aren't cool enough to visit this page or it doesn't exist <em>. . . like your social life.</em>
     </p>
-    <a href="{{ serverurl }}"><button>You can go now!</button></a>
+    <a href="{{ url_for('urlshort.home') }}"><button>You can go now!</button></a>
   </main>
 </div>
-
-{% endblock %}
